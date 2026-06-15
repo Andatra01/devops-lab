@@ -1,0 +1,5 @@
+FROM alpine:latest
+CMD ["echo", "Hello", "D[D[D[D[[[[C[C[C[Co,[C[C[C[ Docker!"]
+EOF
+
+
