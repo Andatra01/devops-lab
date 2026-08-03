@@ -1,3 +1,3 @@
 #!/bin/bash
 echo "goodbye world" | sed -E 's/goodbye/hello/'
-echo "Проверка"
+echo "Проверка 2"
