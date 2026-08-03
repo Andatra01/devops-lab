@@ -1,1 +1,2 @@
-"Hello"
+#!/bin/bash
+echo "goodbye world" | sed -E 's/goodbye/hello/'
