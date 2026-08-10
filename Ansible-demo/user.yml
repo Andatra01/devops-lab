@@ -3,7 +3,10 @@
   hosts: demo
   tasks:
     - name: Create user
+      vars:
+        user: kirata11
       user:
         name: "{{ user }}"
         state: present
       become: true
+      debugger: always
