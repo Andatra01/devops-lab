@@ -1,6 +1,6 @@
 ---
 - name: Preconfig
-  hosts: demo
+  hosts: cluster
   become: true
   tasks:
     - name: Установка Docker и Docker Compose
