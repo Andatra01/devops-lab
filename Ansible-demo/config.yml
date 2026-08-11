@@ -1,0 +1,94 @@
+---
+- name: Preconfig
+  hosts: demo
+  become: true
+  tasks:
+    - name: Установка Docker и Docker Compose
+      block:
+        - name: Установить зависимости
+          apt:
+            name:
+              - ca-certificates
+              - curl
+            update_cache: yes
+            cache_valid_time: 86400
+
+        - name: Создать директорию для ключей
+          file:
+            path: /etc/apt/keyrings
+            state: directory
+            mode: 0755
+
+        - name: Скачать GPG-ключ Docker
+          get_url:
+            url: https://download.docker.com/linux/debian/gpg
+            dest: /etc/apt/keyrings/docker.asc
+            mode: 0644
+
+        - name: Добавить репозиторий Docker (deb822)
+          copy:
+            dest: /etc/apt/sources.list.d/docker.sources
+            content: |
+              Types: deb
+              URIs: https://download.docker.com/linux/debian
+              Suites: {{ ansible_distribution_release }}
+              Components: stable
+              Architectures: {{ ansible_architecture | replace('x86_64', 'amd64') }}
+              Signed-By: /etc/apt/keyrings/docker.asc
+            owner: root
+            group: root
+            mode: 0644
+
+        - name: Обновить кэш APT
+          apt:
+            update_cache: yes
+
+        - name: Установить Docker CE
+          apt:
+            name:
+              - docker-ce
+              - docker-ce-cli
+              - containerd.io
+            state: present
+
+        - name: Запустить и включить Docker
+          service:
+            name: docker
+            state: started
+            enabled: yes
+
+        - name: Установить Docker Compose
+          apt:
+            name: docker-compose-plugin
+            state: present
+
+      rescue:
+        - debug:
+            msg: "Ошибка при установке Docker/Compose"
+
+      always:
+        - debug:
+            msg: "Завершение блока установки"
+
+    - name: Завершение установки
+      block:
+        - name: Добавление пользователя в группу Docker
+          user:
+            name: "kirata"
+            groups: docker
+            append: yes
+
+        - name: Проверка групп пользователя
+          command: groups kirata
+          register: groups_output
+          changed_when: false
+
+        - name: Вывод групп
+          debug:
+            msg: "Группы пользователя: {{ groups_output.stdout }}"
+
+        - name: Инструкция
+          debug:
+            msg: |
+              Группа docker добавлена.
+              Выйдите и зайдите заново, или выполните newgrp docker.
