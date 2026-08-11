@@ -21,4 +21,9 @@
       until: job_result.finished
       retries: 100
       delay: 1
+      ignore_errors: true
+    - name: Reboot
+      shell: reboot
+      async: 1000
+      poll: 0
       become: true
