@@ -21,7 +21,7 @@
 
         - name: Скачать GPG-ключ Docker
           ansible.builtin.get_url:
-            url: https://download.docker.com/linux/ubuntu/gpg
+            url: https://download.docker.com/linux/debian/gpg
             dest: /etc/apt/keyrings/docker.asc
             mode: '0644'
 
@@ -30,7 +30,7 @@
             dest: /etc/apt/sources.list.d/docker.sources
             content: |
               Types: deb
-              URIs: https://download.docker.com/linux/ubuntu
+              URIs: https://download.docker.com/linux/debian
               Suites: {{ ansible_distribution_release }}
               Components: stable
               Architectures: {{ ansible_architecture | replace('x86_64', 'amd64') }}
@@ -76,21 +76,21 @@
       block:
         - name: Добавление пользователя в группу Docker
           ansible.builtin.user:
-            name: "vagrant"
+            name: "kirata"
             groups: docker
             append: true
 
         - name: Проверка групп пользователя
-          ansible.builtin.command: groups vagrant
+          ansible.builtin.command: groups kirata
           register: groups_output
           changed_when: false
 
         - name: Вывод групп
           ansible.builtin.debug:
-            msg: "Группы пользователя vagrant: {{ groups_output.stdout }}"
+            msg: "Группы пользователя: {{ groups_output.stdout }}"
 
         - name: Инструкция
           ansible.builtin.debug:
             msg: |
-              Группа docker добавлена для vagrant.
+              Группа docker добавлена.
               Выйдите и зайдите заново, или выполните newgrp docker.
