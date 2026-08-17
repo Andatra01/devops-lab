@@ -1,0 +1,41 @@
+services:
+  flask:
+    build:
+      context: ./flask-app
+      dockerfile: Dockerfile
+    environment:
+      - REDIS_HOST=cache
+    depends_on:
+      - cache
+    networks: [my-net]
+
+  app:
+    image: nginx:alpine
+    ports:
+      - 8080:80
+    networks: [my-net]
+
+  cache:
+    image: redis:7-alpine
+    networks: [my-net]
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: appuser
+      POSTGRES_DB: appdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks: [my-net]
+
+
+networks:
+  my-net:
+    driver: bridge
+  postgres:
+
+volumes:
+  pgdata:
+
+
