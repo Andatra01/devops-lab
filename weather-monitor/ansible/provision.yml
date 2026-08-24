@@ -1,0 +1,21 @@
+- hosts: weather_vm
+  become: true
+  tasks:
+    - name: Install k3s (lightweight Kubernetes)
+      shell: curl -sfL https://get.k3s.io | sh -
+      args:
+        creates: /usr/local/bin/k3s
+
+    - name: Wait for k3s config to appear
+      wait_for:
+        path: /etc/rancher/k3s/k3s.yaml
+        state: present
+        timeout: 90
+
+    - name: Copy kubeconfig for vagrant user
+      shell: |
+        mkdir -p /home/vagrant/.kube
+        cp /etc/rancher/k3s/k3s.yaml /home/vagrant/.kube/config
+        chown vagrant:vagrant /home/vagrant/.kube/config
+      args:
+        creates: /home/vagrant/.kube/config
