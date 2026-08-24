@@ -1,6 +1,6 @@
 services:
   api:
-    image: kirata/demo4 
+    image: kirata/demo4
     container_name: my-name
     ports:
       - 3000:3000
@@ -15,3 +15,5 @@ networks:
 
 volumes:
   data:
+
+

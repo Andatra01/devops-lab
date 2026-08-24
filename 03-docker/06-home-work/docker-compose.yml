@@ -29,7 +29,6 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks: [my-net]
 
-
 networks:
   my-net:
     driver: bridge
@@ -37,5 +36,3 @@ networks:
 
 volumes:
   pgdata:
-
-
