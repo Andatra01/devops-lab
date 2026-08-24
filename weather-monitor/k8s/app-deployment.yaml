@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: weather-app
-          image: ghcr.io/ТВОЙ_ЛОГИН/ТВОЙ_РЕПО:latest
+          image: ghcr.io/andatra01/devops-lab:latest
           ports: [{ containerPort: 8000 }]
           resources:
             requests: { cpu: "100m", memory: "128Mi" }
