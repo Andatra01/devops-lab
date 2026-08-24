@@ -2,7 +2,7 @@ name: build-and-push
 on:
   push:
     branches: [main]
-    paths: ["app/**"]
+    paths: ["weather-monitor/app/**"]
 
 jobs:
   build:
@@ -25,7 +25,7 @@ jobs:
 
       - uses: docker/build-push-action@v5
         with:
-          context: ./app
+          context: ./weather-monitor/app
           push: true
           tags: |
             ghcr.io/${{ github.repository }}:latest
