@@ -1,26 +1,44 @@
-version: "3"
 services:
-  api:
+  app:
     build:
       context: .
-      dockerfile: ./apps/api/Dockerfile
+      dockerfile: ./apps/app/Dockerfile
     restart: always
-    container_name: api
-    volumes:
-    - ./.env:/opt/app/.env
+    container_name: app
+    ports:
+    - 3001:80
     networks:
     - myNetwork
+
+  api:
+    extends:
+      file: docker-compose.api.yml
+      service: api
     depends_on:
     - rmq
 
   rmq:
     image: rabbitmq:3-management
+    container_name: rmq
     restart: always
     networks:
     - myNetwork
     environment:
     - RABBITMQ_DEFAULT_USER=admin
     - RABBITMQ_DEFAULT_PASS=admin
+
+  converter:
+    build:
+      context: .
+      dockerfile: ./apps/converter/Dockerfile
+    depends_on:
+    - rmq
+    container_name: converter
+    volumes:
+    - ./.env:/opt/app/.env
+    restart: always
+    networks:
+    - myNetwork
 
 networks:
   myNetwork:

@@ -1,0 +1,4 @@
+services:
+  rmq:
+    ports: 
+    - 15672:15762
