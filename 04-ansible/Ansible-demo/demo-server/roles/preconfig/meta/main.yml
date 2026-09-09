@@ -1,7 +1,13 @@
-argument_specs:
-  main:
-    short_description: Настройка серверов для работы с Docker
+galaxy_info:
+    role_name:
+    description: Настройка серверов для работы с Docker
     author: Kirill Litvinov
+    license: MIT
+    min_ansible_version: 2.19
+    platdorms:
+      - name: Ubuntu
+        version:
+          - all
 dependencies:
   - role: deploy
 allow_dublicate: true
