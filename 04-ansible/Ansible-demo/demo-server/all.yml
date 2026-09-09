@@ -1,0 +1,9 @@
+---
+- name: All configs
+  hosts: cluster
+  roles:
+    - role: deploy
+      message: 'sss'
+    - role: deploy
+      message: 'ppp'
+
