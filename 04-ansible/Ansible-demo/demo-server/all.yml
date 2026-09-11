@@ -1,9 +1,26 @@
 ---
-- name: All configs
-  hosts: cluster
+- name: Deploy servers
+  hosts: deploy
   roles:
+    - role: preconfig
+      tags: preconfig
     - role: deploy
-      message: 'sss'
-    - role: deploy
-      message: 'ppp'
+      test: 0
+      tags: deploy
+    #- swarm_init
+
+- name: Manager
+  hosts: managers
+  roles:
+    - role: preconfig
+      tags: preconfig
+    #- swarm_join
+
+- name: Worker
+  hosts: workers
+  roles:
+    - role: preconfig
+      tags: preconfig
+    #- swarm_join
+
 

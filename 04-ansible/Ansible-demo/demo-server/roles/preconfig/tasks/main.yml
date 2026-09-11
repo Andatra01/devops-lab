@@ -7,11 +7,13 @@
         repo: "deb http://archive.ubuntu.com/ubuntu/ {{ ansible_facts['distribution_release'] }} universe"
         state: present
 
+
     - name: Установка дополнительных пакетов
       apt:
         name:
           - ca-certificates
           - curl
+          - python3-pip
         update-cache: yes
         cache_valid_time: 86400
 
@@ -43,6 +45,12 @@
           - docker-buildx-plugin
           - docker-compose-plugin
         update_cache: yes
+
+    - name: Настройка доп пакетов python
+      block:
+        - name: Установка pip пакетов
+          pip:
+            name: docker
 
     - name: Проверка что Docker установлен и перезагружен
       service:

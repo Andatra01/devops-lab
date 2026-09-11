@@ -1,3 +1,4 @@
 ---
-- name: Demo
-  command: echo "Demo"
+- name: Задача deploy
+  debug:
+    msg: "{{ lookup('file', '../meta/mains.yml', errors='warn') }}"

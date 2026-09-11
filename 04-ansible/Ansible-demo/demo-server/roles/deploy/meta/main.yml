@@ -1,6 +1,6 @@
 galaxy_info:
-    role_name: preconfig
-    description: Настройка серверов для работы с Docker
+    role_name: deploy
+    description: Выкладка микросервисов на docker cluster
     author: Kirill Litvinov
     license: MIT
     min_ansible_version: 2.19
