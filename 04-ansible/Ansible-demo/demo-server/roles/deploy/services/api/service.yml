@@ -11,13 +11,14 @@
 
     - name: "[{{ name }}] Создаем секрет"
       ansible.builtin.include_tasks: "secret-create.yml"
+  tags: "{{ name }}"
 
 - name: "[{{ name }}] Выкладка сервиса"
   block:
     - name: "[{{ name }}] Выкладываем сервис"
       community.docker.docker_swarm_service:
         name: "my_app_{{ name }}"
-        image: localhost:5000/{{ name }}:latest
+        image: "{{ registry_name }}{{ name }}:{{ version }}"
         state: present
         networks:
           - name: "{{ networkName }}"
@@ -29,3 +30,4 @@
         secrets:
           - secret_name: "{{ name }}.env"
             filename: "/opt/app/.env"
+  tags: "{{ name }}"

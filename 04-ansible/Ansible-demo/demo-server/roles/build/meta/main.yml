@@ -1,0 +1,10 @@
+galaxy_info:
+    role_name: build
+    description: Сборка монореплзитория
+    author: Kirill Litvinov
+    license: MIT
+    min_ansible_version: 2.19
+    platdorms:
+      - name: Ubuntu
+        version:
+          - all
