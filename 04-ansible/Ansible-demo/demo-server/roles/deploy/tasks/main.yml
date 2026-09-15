@@ -1,4 +1,13 @@
 ---
-- name: Задача deploy
-  debug:
-    msg: "{{ lookup('file', '../meta/mains.yml', errors='warn') }}"
+- name: Создание сети
+  community.docker.docker_network:
+    name: "{{ networkName }}"
+    driver: overlay
+    attachable: true
+    state: present
+
+- name: Выкладка сервисов
+  ansible.builtin.include_tasks: "../services/{{ item.keys() | first }}/service.yml"
+  vars:
+    name: "{{ item.keys() | first }}"
+  loop: "{{ services }}"

@@ -16,4 +16,5 @@ git check-ignore -v 03-docker/02-home-work/Dockerfile
 branch-demo/
 *.tar
 *.iso
-mongo/
+mongo0/
+.pass

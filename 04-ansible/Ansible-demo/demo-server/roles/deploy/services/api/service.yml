@@ -1,0 +1,31 @@
+---
+- name: "[{{ name }}] Конфигурация секрета"
+  block:
+    - name: "[{{ name }}] Создаем секрет"
+      ansible.builtin.include_tasks: "secret-create.yml"    # ← без ../
+  rescue:
+    - name: "[{{ name }}] Удаляем сервис"
+      community.docker.docker_swarm_service:
+        name: "my_app_{{ name }}"
+        state: absent
+
+    - name: "[{{ name }}] Создаем секрет"
+      ansible.builtin.include_tasks: "secret-create.yml"
+
+- name: "[{{ name }}] Выкладка сервиса"
+  block:
+    - name: "[{{ name }}] Выкладываем сервис"
+      community.docker.docker_swarm_service:
+        name: "my_app_{{ name }}"
+        image: localhost:5000/{{ name }}:latest
+        state: present
+        networks:
+          - name: "{{ networkName }}"
+        publish:
+          - mode: ingress
+            protocol: tcp
+            published_port: 3002
+            target_port: 3000
+        secrets:
+          - secret_name: "{{ name }}.env"
+            filename: "/opt/app/.env"
